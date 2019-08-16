@@ -2,28 +2,28 @@ package org.pva.domain.cell;
 
 abstract public class Cell {
 
-    private Integer rowNumber;
+    private Integer row;
 
-    private Integer colNumber;
+    private Integer col;
 
-    Cell(Integer rowNumber, Integer colNumber) {
-        this.rowNumber = rowNumber;
-        this.colNumber = colNumber;
+    Cell(Integer row, Integer col) {
+        this.row = row;
+        this.col = col;
     }
 
-    public Integer getRowNumber() {
-        return rowNumber;
+    Integer getRow() {
+        return row;
     }
 
-    public void setRowNumber(Integer rowNumber) {
-        this.rowNumber = rowNumber;
+    public void setRow(Integer row) {
+        this.row = row;
     }
 
-    public Integer getColNumber() {
-        return colNumber;
+    Integer getCol() {
+        return col;
     }
 
-    public void setColNumber(Integer colNumber) {
-        this.colNumber = colNumber;
+    public void setCol(Integer col) {
+        this.col = col;
     }
 }
