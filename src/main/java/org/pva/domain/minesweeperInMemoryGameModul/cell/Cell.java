@@ -1,4 +1,4 @@
-package org.pva.domain.cell;
+package org.pva.domain.minesweeperInMemoryGameModul.cell;
 
 abstract public class Cell {
 

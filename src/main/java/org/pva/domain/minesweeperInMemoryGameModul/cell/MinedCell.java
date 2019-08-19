@@ -1,4 +1,4 @@
-package org.pva.domain.cell;
+package org.pva.domain.minesweeperInMemoryGameModul.cell;
 
 public class MinedCell extends Cell {
 

@@ -1,6 +1,6 @@
-package org.pva.domain.cell;
+package org.pva.domain.minesweeperInMemoryGameModul.cell;
 
-import org.pva.domain.field.MinedField;
+import org.pva.domain.minesweeperInMemoryGameModul.field.MinedField;
 
 public class FreeCell extends Cell {
 
