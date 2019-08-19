@@ -1,5 +1,7 @@
 package org.pva.domain.abstraction.reactor;
 
+import org.pva.domain.abstraction.dto.InputDataDto;
+import org.pva.domain.abstraction.dto.OutputDataDto;
 import org.pva.domain.abstraction.robot.Robot;
 
 public abstract class Reactor {
@@ -10,10 +12,8 @@ public abstract class Reactor {
 
     public abstract InputDataDto getInputData();
 
-    public abstract void makeAction(OutputDataDto outputData);
+    public abstract Boolean makeAction(OutputDataDto outputData);
 
     public abstract void start();
-
-    public abstract Boolean executesExitExpression();
 
 }

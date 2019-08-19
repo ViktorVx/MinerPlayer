@@ -1,12 +1,12 @@
-package org.pva.domain.minesweeperInMemoryGameModul.field;
+package org.pva.domain.minesweeperInMemoryGameModule.field;
 
-import org.pva.domain.minesweeperInMemoryGameModul.cell.Cell;
-import org.pva.domain.minesweeperInMemoryGameModul.cell.FreeCell;
-import org.pva.domain.minesweeperInMemoryGameModul.cell.MinedCell;
+import org.pva.domain.minesweeperInMemoryGameModule.cell.Cell;
+import org.pva.domain.minesweeperInMemoryGameModule.cell.FreeCell;
+import org.pva.domain.minesweeperInMemoryGameModule.cell.MinedCell;
 
 import java.util.Random;
 
-public class MinedField extends Field {
+public class MinedField{
 
     private final Integer rowNumber;
 
@@ -44,7 +44,11 @@ public class MinedField extends Field {
         return cells[row * colNumber + col];
     }
 
-    public static Field generateRandomMinedField(Integer rowNumber, Integer colNumber, Integer mineNumber) {
+    public void setCell(Integer row, Integer col, Cell cell) {
+        cells[row * colNumber + col] = cell;
+    }
+
+    public static MinedField generateRandomMinedField(Integer rowNumber, Integer colNumber, Integer mineNumber) {
         MinedField minedField = new MinedField(rowNumber, colNumber, mineNumber);
         final int[] mineCoords = new Random().ints(0, rowNumber * colNumber - 1).distinct().limit(mineNumber).toArray();
         for (int mineCoord : mineCoords) {
@@ -64,15 +68,15 @@ public class MinedField extends Field {
         return minedField;
     }
 
-    public static Field generateUnknownMinedField(Integer rowNumber, Integer colNumber, Integer mineNumber) {
+    public static MinedField generateUnknownMinedField(Integer rowNumber, Integer colNumber, Integer mineNumber) {
         return new MinedField(rowNumber, colNumber, mineNumber);
     }
 
-    public static void printField(Field minedField) {
+    public static void printField(MinedField minedField) {
         System.out.println("------------------------------");
-        for (int i = 0; i < ((MinedField)minedField).getRowNumber(); i++) {
-            for (int j = 0; j < ((MinedField)minedField).getColNumber(); j++) {
-                Cell cell = ((MinedField)minedField).getCell(i, j);
+        for (int i = 0; i < minedField.getRowNumber(); i++) {
+            for (int j = 0; j < minedField.getColNumber(); j++) {
+                Cell cell = minedField.getCell(i, j);
                 if (cell == null) {
                     System.out.print(" X ");
                     continue;
