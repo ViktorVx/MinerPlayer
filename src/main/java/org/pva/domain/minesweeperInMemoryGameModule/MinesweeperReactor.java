@@ -21,7 +21,7 @@ public class MinesweeperReactor extends Reactor {
     public MinesweeperReactor(MinesweeperStartData startData) {
         this.virtualField = startData.getVirtualField();
 
-        this.visibleField = (MinedField) MinedField.generateUnknownMinedField(this.virtualField.getRowNumber(),
+        this.visibleField = MinedField.generateUnknownMinedField(this.virtualField.getRowNumber(),
                 this.virtualField.getColNumber(),
                 this.virtualField.getMineNumber());
     }
@@ -100,10 +100,32 @@ public class MinesweeperReactor extends Reactor {
             }
         }
 
-        //TODO - stopped here
-        if (row < visibleField.getRowNumber() - 1) visibleField.setCell(row + 1, col, virtualField.getCell( row + 1, col));
-        if (row < visibleField.getRowNumber() - 1 && col > 0) visibleField.setCell(row + 1, col - 1, virtualField.getCell( row + 1, col - 1));
-        if (col > 0) visibleField.setCell(row, col - 1, virtualField.getCell( row, col - 1));
+        if (row < visibleField.getRowNumber() - 1) {
+            if (visibleField.getCell(row + 1, col) == null) {
+                cell = virtualField.getCell(row + 1, col);
+                visibleField.setCell(row + 1, col, virtualField.getCell(row + 1, col));
+                if (cell instanceof FreeCell && ((FreeCell) cell).getNumberClosestMines().equals(0))
+                    openSurroundCells(row + 1, col);
+            }
+        }
+
+        if (row < visibleField.getRowNumber() - 1 && col > 0) {
+            if (visibleField.getCell(row + 1, col - 1) == null) {
+                cell = virtualField.getCell(row + 1, col - 1);
+                visibleField.setCell(row + 1, col - 1, virtualField.getCell(row + 1, col - 1));
+                if (cell instanceof FreeCell && ((FreeCell) cell).getNumberClosestMines().equals(0))
+                        openSurroundCells(row + 1, col - 1);
+            }
+        }
+
+        if (col > 0) {
+            if (visibleField.getCell(row, col - 1) == null) {
+                cell = virtualField.getCell(row, col - 1);
+                visibleField.setCell(row, col - 1, virtualField.getCell(row, col - 1));
+                if (cell instanceof FreeCell && ((FreeCell) cell).getNumberClosestMines().equals(0))
+                    openSurroundCells(row, col - 1);
+            }
+        }
     }
 
     @Override
