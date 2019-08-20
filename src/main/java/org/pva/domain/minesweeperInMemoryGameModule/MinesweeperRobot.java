@@ -26,7 +26,7 @@ public class MinesweeperRobot extends Robot {
 
     private MinedField visibleField;
 
-    public MinesweeperRobot(InputDataDto inputData) {
+    MinesweeperRobot(InputDataDto inputData) {
         unclearedMinesNumber = ((MinesweeperInputData)inputData).getVisibleField().getMineNumber();
         visibleField = ((MinesweeperInputData)inputData).getVisibleField();
 
@@ -44,6 +44,7 @@ public class MinesweeperRobot extends Robot {
     @Override
     public OutputDataDto makeDataForAction() {
 
+        // in first turn return a random coordinate
         if (isUnclearedField) {
             Random random = new Random();
             return new MinesweeperOutputData(
@@ -52,6 +53,18 @@ public class MinesweeperRobot extends Robot {
                     false);
         }
 
+        // make easy analyse: is there any cell that has
+        // number of unknown cell equals number of closest mined cells
+        OutputDataDto outputData = easyAnalyse();
+        if (outputData != null) {
+            return outputData;
+        }
+
+
+        return null;
+    }
+
+    private OutputDataDto easyAnalyse() {
         for (int i = 0; i < rowNumber; i++) {
             for (int j = 0; j < colNumber; j++) {
                 Cell cell = visibleField.getCell(i, j);
@@ -61,7 +74,82 @@ public class MinesweeperRobot extends Robot {
                 ) {
                     continue;
                 } else {
+                    if (cell instanceof FreeCell) {
+                        Integer unknownCellsNumber = 0;
+                        Integer targetI = null, targetJ = null;
 
+                        if (i > 0 && j > 0) {
+                            if (visibleField.getCell(i - 1, j - 1) == null) {
+                                unknownCellsNumber++;
+                                targetI = i - 1;
+                                targetJ = j - 1;
+                            }
+                        }
+
+                        if (i > 0) {
+                            if (visibleField.getCell(i - 1, j) == null) {
+                                unknownCellsNumber++;
+                                targetI = i - 1;
+                                targetJ = j;
+                            }
+                        }
+
+                        if (i > 0 && j < visibleField.getColNumber() - 1) {
+                            if (visibleField.getCell(i - 1, j + 1) == null) {
+                                unknownCellsNumber++;
+                                targetI = i - 1;
+                                targetJ = j + 1;
+                            }
+                        }
+
+                        if (j < visibleField.getColNumber() - 1) {
+                            if (visibleField.getCell(i, j + 1) == null) {
+                                unknownCellsNumber++;
+                                targetI = i;
+                                targetJ = j + 1;
+                            }
+                        }
+
+                        if (i < visibleField.getRowNumber() - 1 && j < visibleField.getColNumber() - 1) {
+                            if (visibleField.getCell(i + 1, j + 1) == null) {
+                                unknownCellsNumber++;
+                                targetI = i + 1;
+                                targetJ = j + 1;
+                            }
+                        }
+
+                        if (i < visibleField.getRowNumber() - 1) {
+                            if (visibleField.getCell(i + 1, j) == null) {
+                                unknownCellsNumber++;
+                                targetI = i + 1;
+                                targetJ = j;
+                            }
+                        }
+
+                        if (i < visibleField.getRowNumber() - 1 && j > 0) {
+                            if (visibleField.getCell(i + 1, j - 1) == null) {
+                                unknownCellsNumber++;
+                                targetI = i + 1;
+                                targetJ = j - 1;
+                            }
+                        }
+
+                        if (j > 0) {
+                            if (visibleField.getCell(i, j - 1) == null) {
+                                unknownCellsNumber++;
+                                targetI = i;
+                                targetJ = j - 1;
+                            }
+                        }
+
+                        if (((FreeCell) cell).getNumberClosestMines().equals(unknownCellsNumber) && targetI != null) {
+                            unclearedMinesNumber--;
+                            OutputDataDto outputData = new MinesweeperOutputData(targetI, targetJ, true);
+                            if (unclearedMinesNumber.equals(0))
+                                ((MinesweeperOutputData) outputData).setRobotWins(true);
+                            return outputData;
+                        }
+                    }
                 }
             }
         }

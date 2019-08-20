@@ -2,6 +2,7 @@ package org.pva.domain.abstraction.reactor;
 
 import org.pva.domain.abstraction.dto.InputDataDto;
 import org.pva.domain.abstraction.dto.OutputDataDto;
+import org.pva.domain.abstraction.dto.ResultDataDto;
 import org.pva.domain.abstraction.robot.Robot;
 
 public abstract class Reactor {
@@ -12,7 +13,9 @@ public abstract class Reactor {
 
     public abstract InputDataDto getInputData();
 
-    public abstract Boolean makeAction(OutputDataDto outputData);
+    public abstract void makeAction(OutputDataDto outputData);
+
+    public abstract ResultDataDto analyseCurrentState(InputDataDto inputData);
 
     public abstract void start();
 

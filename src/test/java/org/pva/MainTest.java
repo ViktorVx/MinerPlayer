@@ -14,7 +14,7 @@ class MainTest {
         final Integer MINE_NUMBER = 3;
 
         // Virtual field
-        final MinedField virtualMinedField = (MinedField) MinedField.generateRandomMinedField(ROW_NUMBER, COL_NUMBER, MINE_NUMBER);
+        final MinedField virtualMinedField = MinedField.generateRandomMinedField(ROW_NUMBER, COL_NUMBER, MINE_NUMBER);
         MinedField.printField(virtualMinedField);
 
         // ***
