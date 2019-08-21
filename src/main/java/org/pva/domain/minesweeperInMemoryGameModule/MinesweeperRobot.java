@@ -5,11 +5,14 @@ import org.pva.domain.abstraction.dto.OutputDataDto;
 import org.pva.domain.abstraction.robot.Robot;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.Cell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.FreeCell;
+import org.pva.domain.minesweeperInMemoryGameModule.cell.MarkedCell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.MinedCell;
 import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperInputData;
 import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperOutputData;
 import org.pva.domain.minesweeperInMemoryGameModule.field.MinedField;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MinesweeperRobot extends Robot {
@@ -53,17 +56,22 @@ public class MinesweeperRobot extends Robot {
                     false);
         }
 
-        // make easy analyse: is there any cell that has
-        // number of unknown cell equals number of closest mined cells
+
+        //Algorithm for minesweeper-player
         OutputDataDto outputData = easyAnalyse();
         if (outputData != null) {
             return outputData;
         }
 
+        outputData = hardAnalyse();
+        //*************************
 
-        return null;
+
+        return outputData;
     }
 
+
+    //******************************************************************************************************************
     private OutputDataDto easyAnalyse() {
         for (int i = 0; i < rowNumber; i++) {
             for (int j = 0; j < colNumber; j++) {
@@ -142,17 +150,53 @@ public class MinesweeperRobot extends Robot {
                             }
                         }
 
-                        if (((FreeCell) cell).getNumberClosestMines().equals(unknownCellsNumber) && targetI != null) {
+                        if (((FreeCell) cell).getNumberClosestMines() >= unknownCellsNumber && targetI != null) {
                             unclearedMinesNumber--;
                             MinesweeperOutputData outputData = new MinesweeperOutputData(targetI, targetJ, true);
-                            if (unclearedMinesNumber.equals(0))
-                                outputData.setRobotWins(true);
                             return outputData;
                         }
                     }
                 }
             }
         }
+        return null;
+    }
+
+    private OutputDataDto hardAnalyse() {
+
+        class Coordinate {
+            Integer row, col;
+
+            public Coordinate(Integer row, Integer col) {
+                this.row = row;
+                this.col = col;
+            }
+        }
+
+        List<Coordinate> unknownCells = new ArrayList<>();
+        List<Cell> markedCells = new ArrayList<>();
+        List<Cell> freeCells = new ArrayList<>();
+
+        for (int i = 0; i < visibleField.getRowNumber(); i++) {
+            for (int j = 0; j < visibleField.getColNumber(); j++) {
+                Cell cell = visibleField.getCell(i, j);
+                if (cell == null) {
+                    unknownCells.add(new Coordinate(i, j));
+                    continue;
+                }
+                if (cell instanceof MarkedCell) {
+                    markedCells.add(cell);
+                    continue;
+                }
+                freeCells.add(cell);
+            }
+        }
+
+        Double randomMarkProbability = Double.valueOf(visibleField.getMineNumber() - markedCells.size()) /
+                Double.valueOf(unknownCells.size());
+        System.out.println(randomMarkProbability);
+
+
         return null;
     }
 }

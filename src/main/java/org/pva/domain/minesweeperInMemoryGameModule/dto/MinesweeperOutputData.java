@@ -10,8 +10,6 @@ public class MinesweeperOutputData extends OutputDataDto {
 
     private Boolean markMinedCell;
 
-    private Boolean robotWins = false;
-
     public MinesweeperOutputData(Integer row, Integer col, Boolean markMinedCell) {
         this.row = row;
         this.col = col;
@@ -42,11 +40,4 @@ public class MinesweeperOutputData extends OutputDataDto {
         this.col = col;
     }
 
-    public Boolean getRobotWins() {
-        return robotWins;
-    }
-
-    public void setRobotWins(Boolean robotWins) {
-        this.robotWins = robotWins;
-    }
 }
