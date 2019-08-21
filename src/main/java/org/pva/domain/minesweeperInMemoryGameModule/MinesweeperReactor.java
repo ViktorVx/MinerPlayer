@@ -9,10 +9,7 @@ import org.pva.domain.minesweeperInMemoryGameModule.cell.Cell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.FreeCell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.MarkedCell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.MinedCell;
-import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperInputData;
-import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperOutputData;
-import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperResultData;
-import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperStartData;
+import org.pva.domain.minesweeperInMemoryGameModule.dto.*;
 import org.pva.domain.minesweeperInMemoryGameModule.field.MinedField;
 
 public class MinesweeperReactor extends Reactor {
@@ -57,8 +54,21 @@ public class MinesweeperReactor extends Reactor {
 
     @Override
     public ResultDataDto analyseCurrentState(InputDataDto inputData) {
-        // TODO first of all realise analyse of the current state of the field
-        return null;
+        Integer numberDiscoveredMines = 0;
+        MinedField minedField = ((MinesweeperInputData) inputData).getVisibleField();
+        for (int i = 0; i < minedField.getRowNumber(); i++) {
+            for (int j = 0; j < minedField.getColNumber(); j++) {
+                if (minedField.getCell(i, j) instanceof MinedCell)
+                    return new MinesweeperResultData(GameState.GAME_OVER);
+                if (minedField.getCell(i, j) instanceof MarkedCell)
+                    numberDiscoveredMines++;
+            }
+        }
+
+        if (numberDiscoveredMines.equals(virtualField.getMineNumber()))
+            return new MinesweeperResultData(GameState.ROBOT_WINS);
+
+        return new MinesweeperResultData(GameState.CONTINUE_GAME);
     }
 
     @Override
@@ -71,17 +81,19 @@ public class MinesweeperReactor extends Reactor {
             makeAction(outputData);
 
             MinesweeperResultData resultData = (MinesweeperResultData) analyseCurrentState(getInputData());
-            //TODO add analyser of current state after made action !!! First of all
 
             robot.refreshMemory(new MinesweeperInputData(visibleField));
             MinedField.printField(visibleField);
 
-            //TODO - remove this if statement
-            if (((MinesweeperOutputData) outputData).getRobotWins()) {
-                System.out.println("Robot wins!");
+            if (resultData.getGameState().equals(GameState.GAME_OVER)) {
+                System.out.println("Game over!");
                 break;
             }
 
+            if (resultData.getGameState().equals(GameState.ROBOT_WINS)) {
+                System.out.println("Robot wins!");
+                break;
+            }
         }
         // ***
 
