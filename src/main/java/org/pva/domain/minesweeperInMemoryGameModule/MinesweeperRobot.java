@@ -144,9 +144,9 @@ public class MinesweeperRobot extends Robot {
 
                         if (((FreeCell) cell).getNumberClosestMines().equals(unknownCellsNumber) && targetI != null) {
                             unclearedMinesNumber--;
-                            OutputDataDto outputData = new MinesweeperOutputData(targetI, targetJ, true);
+                            MinesweeperOutputData outputData = new MinesweeperOutputData(targetI, targetJ, true);
                             if (unclearedMinesNumber.equals(0))
-                                ((MinesweeperOutputData) outputData).setRobotWins(true);
+                                outputData.setRobotWins(true);
                             return outputData;
                         }
                     }
@@ -154,10 +154,5 @@ public class MinesweeperRobot extends Robot {
             }
         }
         return null;
-    }
-
-    @Override
-    public Boolean isWorkComplete() {
-        return unclearedMinesNumber.equals(0);
     }
 }

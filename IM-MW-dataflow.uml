@@ -1,0 +1,20 @@
+@startuml
+
+abstract class Reactor {
+    Robot robot
+    ==
+    InputDataDto getInputData()
+    void makeAction(OutputDataDto outputData)
+    ResultDataDto analyseCurrentState(InputDataDto inputData)
+    void start()
+}
+
+abstract class Robot{
+    ==
+    void refreshMemory(InputDataDto inputData)   
+    OutputDataDto makeDataForAction()
+}
+
+Reactor --> Robot
+
+@enduml

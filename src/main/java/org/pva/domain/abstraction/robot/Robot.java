@@ -9,6 +9,4 @@ abstract public class Robot {
 
     public abstract OutputDataDto makeDataForAction();
 
-    public abstract Boolean isWorkComplete();
-
 }

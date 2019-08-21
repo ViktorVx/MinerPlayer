@@ -38,7 +38,7 @@ mvnw.cmd
 
 ### Uml-GraphViz ###
 *.jar
-SalaryApp.svg
 *.swp
+*.svg
 
 
