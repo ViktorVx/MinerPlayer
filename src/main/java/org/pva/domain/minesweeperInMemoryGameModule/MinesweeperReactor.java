@@ -7,6 +7,7 @@ import org.pva.domain.abstraction.reactor.Reactor;
 import org.pva.domain.abstraction.robot.Robot;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.Cell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.FreeCell;
+import org.pva.domain.minesweeperInMemoryGameModule.cell.MarkedCell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.MinedCell;
 import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperInputData;
 import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperOutputData;
@@ -41,11 +42,13 @@ public class MinesweeperReactor extends Reactor {
         Boolean markAsMinedCell = ((MinesweeperOutputData) outputData).isMarkedAsMinedCell();
 
         Cell cell = virtualField.getCell(row, col);
+        Cell openCell = cell;
 
-        if (cell instanceof MinedCell && !markAsMinedCell) {
-            visibleField.setCell(row, col, cell);
+        if (cell instanceof MinedCell && markAsMinedCell) {
+            openCell = new MarkedCell(row, col);
         }
-        visibleField.setCell(row, col, cell);
+
+        visibleField.setCell(row, col, openCell);
 
         if (cell instanceof FreeCell && ((FreeCell) cell).getNumberClosestMines().equals(0)) {
             openSurroundCells(row, col);

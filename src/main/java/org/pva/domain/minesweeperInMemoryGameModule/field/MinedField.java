@@ -2,6 +2,7 @@ package org.pva.domain.minesweeperInMemoryGameModule.field;
 
 import org.pva.domain.minesweeperInMemoryGameModule.cell.Cell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.FreeCell;
+import org.pva.domain.minesweeperInMemoryGameModule.cell.MarkedCell;
 import org.pva.domain.minesweeperInMemoryGameModule.cell.MinedCell;
 
 import java.util.Random;
@@ -79,6 +80,11 @@ public class MinedField{
                 Cell cell = minedField.getCell(i, j);
                 if (cell == null) {
                     System.out.print(" X ");
+                    continue;
+                }
+
+                if (cell instanceof MarkedCell) {
+                    System.out.print(" + ");
                     continue;
                 }
 
