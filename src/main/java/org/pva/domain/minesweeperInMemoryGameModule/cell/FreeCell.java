@@ -37,4 +37,8 @@ public class FreeCell extends Cell {
         numberClosestMines = closestMines;
 
     }
+
+    public void setNumberClosestMines(Integer numberClosestMines) {
+        this.numberClosestMines = numberClosestMines;
+    }
 }

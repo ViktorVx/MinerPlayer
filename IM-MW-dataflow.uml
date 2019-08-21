@@ -15,6 +15,15 @@ abstract class Robot{
     OutputDataDto makeDataForAction()
 }
 
+abstract class InputDataDto {
+}
+abstract class OutputDataDto {
+}
+abstract class ResultDataDto {
+}
+abstract class StartDataDto {
+}
+
 Reactor --> Robot
 
 @enduml

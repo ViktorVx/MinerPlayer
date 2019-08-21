@@ -7,7 +7,13 @@ import org.pva.domain.minesweeperInMemoryGameModule.cell.MinedCell;
 
 import java.util.Random;
 
-public class MinedField{
+public class MinedField {
+
+    private static final String SEP = " ";
+
+    private static final String LONG_SEP = "------------------------------";
+
+    private static final String MASK = SEP.concat("%s").concat(SEP);
 
     private final Integer rowNumber;
 
@@ -69,34 +75,64 @@ public class MinedField{
         return minedField;
     }
 
+    public static MinedField generateMinedFieldFromString(Integer rowNumber, Integer colNumber, Integer mineNumber, String stringField) {
+        MinedField minedField = new MinedField(rowNumber, colNumber, mineNumber);
+        char[] field = stringField.replaceAll("[\n\\s]", "").toCharArray();
+        for (int i = 0; i < rowNumber; i++) {
+            for (int j = 0; j < colNumber; j++) {
+                Cell cell;
+                char c = field[i * rowNumber + j];
+                switch (c) {
+                    case '*':
+                        cell = new MinedCell(i, j);
+                        break;
+                    case '+':
+                        cell = new MarkedCell(i, j);
+                        break;
+                    case 'X':
+                        cell = null;
+                        break;
+                    default:
+                        cell = new FreeCell(i, j);
+                        ((FreeCell) cell).setNumberClosestMines(Character.getNumericValue(c));
+                }
+                minedField.setCell(i, j, cell);
+
+            }
+        }
+
+
+        return minedField;
+    }
+
     public static MinedField generateUnknownMinedField(Integer rowNumber, Integer colNumber, Integer mineNumber) {
         return new MinedField(rowNumber, colNumber, mineNumber);
     }
 
     public static void printField(MinedField minedField) {
-        System.out.println("------------------------------");
+        System.out.println(LONG_SEP);
         for (int i = 0; i < minedField.getRowNumber(); i++) {
             for (int j = 0; j < minedField.getColNumber(); j++) {
                 Cell cell = minedField.getCell(i, j);
                 if (cell == null) {
-                    System.out.print(" X ");
+                    System.out.print(String.format(MASK, "X"));
                     continue;
                 }
 
                 if (cell instanceof MarkedCell) {
-                    System.out.print(" + ");
+                    System.out.print(String.format(MASK, "+"));
                     continue;
                 }
 
                 if (cell instanceof MinedCell) {
-                    System.out.print(" * ");
+                    System.out.print(String.format(MASK, "*"));
                 } else {
-                    System.out.print(String.format(" %d ", ((FreeCell) cell).getNumberClosestMines()));
+                    System.out.print(String.format(String.format(MASK,"%d"), ((FreeCell) cell).getNumberClosestMines()));
                 }
             }
             System.out.println();
         }
-        System.out.println("------------------------------");
+        System.out.println(LONG_SEP);
     }
 
 
