@@ -1,8 +1,12 @@
 package org.pva;
 
+import org.junit.jupiter.api.Test;
 import org.pva.domain.minesweeperInMemoryGameModule.MinesweeperReactor;
 import org.pva.domain.minesweeperInMemoryGameModule.dto.MinesweeperStartData;
 import org.pva.domain.minesweeperInMemoryGameModule.field.MinedField;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 class MainTest {
 
@@ -64,4 +68,33 @@ class MainTest {
         // ***
         System.out.println("-----------------------------------------------------------------------------------------");
     }
+
+    @Test
+    void mouseKeyboardTest() throws AWTException, InterruptedException {
+
+        Thread.sleep(3000);
+        String text = "Hello World";
+
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_SHIFT);
+
+        robot.keyPress(KeyEvent.VK_H);
+        robot.keyRelease(KeyEvent.VK_H);
+        Thread.sleep(500);
+        robot.keyPress(KeyEvent.VK_E);
+        robot.keyRelease(KeyEvent.VK_E);
+        Thread.sleep(500);
+        robot.keyPress(KeyEvent.VK_L);
+        robot.keyRelease(KeyEvent.VK_L);
+        Thread.sleep(500);
+        robot.keyPress(KeyEvent.VK_L);
+        robot.keyRelease(KeyEvent.VK_L);
+        Thread.sleep(500);
+        robot.keyPress(KeyEvent.VK_O);
+        robot.keyRelease(KeyEvent.VK_O);
+
+        robot.keyRelease(KeyEvent.VK_SHIFT); 
+
+    }
+
 }

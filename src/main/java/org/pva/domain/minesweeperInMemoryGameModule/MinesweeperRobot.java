@@ -58,6 +58,7 @@ public class MinesweeperRobot extends Robot {
 
 
         //Algorithm for minesweeper-player
+        //https://habr.com/ru/post/211188/
         OutputDataDto outputData = easyAnalyse();
         if (outputData != null) {
             return outputData;
